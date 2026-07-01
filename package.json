@@ -1,0 +1,20 @@
+{
+  "name": "modulo2",
+  "version": "1.0.0",
+  "description": "practica de modulo 2",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": ["node", "api rest", "express", "javascript"],
+  "author": "EDGAR ALAPEZ",
+  "license": "ISC",
+  "devEngines": {
+    "packageManager": {
+      "name": "pnpm",
+      "version": "^11.9.0",
+      "onFail": "download"
+    }
+  },
+  "type": "module"
+}
