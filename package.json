@@ -4,17 +4,31 @@
   "description": "practica de modulo 2",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "app.js",
+    "dev": "nodemon app.js"
   },
-  "keywords": ["node", "api rest", "express", "javascript"],
+  "keywords": [
+    "node",
+    "api rest",
+    "express",
+    "javascript"
+  ],
   "author": "EDGAR ALAPEZ",
   "license": "ISC",
   "devEngines": {
     "packageManager": {
       "name": "pnpm",
-      "version": "^11.9.0",
+      "version": "11.9.0",
       "onFail": "download"
     }
   },
-  "type": "module"
+  "type": "module",
+  "dependencies": {
+    "bcryptjs": "^3.0.3",
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1",
+    "jsonwebtoken": "^9.0.3",
+    "mongoose": "^9.7.3",
+    "nodemon": "3.1.14"
+  }
 }
