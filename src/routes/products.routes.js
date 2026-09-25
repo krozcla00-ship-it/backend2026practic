@@ -12,3 +12,4 @@ productsRouter.post("/crear", postProduct);
 productsRouter.get("/mostrar", getProduct);
 productsRouter.put("/actualizar/:id", putProductById);
 productsRouter.delete("/eliminar/:id", deleteProductById);
+

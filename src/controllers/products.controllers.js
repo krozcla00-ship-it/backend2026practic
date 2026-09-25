@@ -3,7 +3,7 @@
 import { productModel } from "../models/products.models.js";
 
 //peticion post -> crear un producto
-export function postProduct(request, response) {
+export async function postProduct(request, response) {
 
     try {
 
@@ -36,8 +36,7 @@ export const getProduct = async (request, response) => {
         }
 
         // Si sí tiene productos guardados,que me los muestre
-        return response.status(200).json({
-            mensaje: 'Estos son todos los productos encontrados',
+        return response.status(200).json({mensaje: 'Estos son todos los productos encontrados',
             datos: products
         });
 

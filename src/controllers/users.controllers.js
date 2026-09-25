@@ -22,109 +22,108 @@ export async function createUser(request, response) {
             user: newUser
         });
 
-} catch (error) {
+    } catch (error) {
 
         return response.status(500).json({
-        menssage: 'Ocurrió un error al crear un usuario',
+            menssage: 'Ocurrió un error al crear un usuario',
             problema: error || error.message
         });
     }
-
-
-
-
-
-
-// peticion get -> obtener  usuarios
-
-export const showUsers = async (req, res) => {
-  // manejo de errores -> atrapar lo que pueda salir mal
-try {
-    // Encontrar TODOS los usuarios
-    let users = await userModel.find();
-    // validación si no se encuentran usuarios almacenados
-    if(users.length === 0){
-        return res.status(200).json({
-            mensaje: 'No hay usuarios almacenados'
-        })
-    }
-
-    return res.status(200).json({
-        menasaje: 'Se encontraron usuarios almacenados',
-        numeroUsuarios: users.length,
-        datos: users
-    })
-
-} catch (error) {
-    return res.status(400).json({
-        mensaje: 'Ocurrió un error al mostrar los usuarios',
-        problema: error || error.message
-    });
 }
-};
+
+
+
+
+
+    // peticion get -> obtener  usuarios
+    export async function showUsers(req, res){
+        // manejo de errores -> atrapar lo que pueda salir mal
+        try {
+            // Encontrar TODOS los usuarios
+            let users = await userModel.find();
+            // validación si no se encuentran usuarios almacenados
+            if (users.length === 0) {
+                return res.status(200).json({
+                    mensaje: 'No hay usuarios almacenados'
+                })
+            }
+
+            return res.status(200).json({
+                menasaje: 'Se encontraron usuarios almacenados',
+                numeroUsuarios: users.length,
+                datos: users
+            })
+
+        } catch (error) {
+            return res.status(400).json({
+                mensaje: 'Ocurrió un error al mostrar los usuarios',
+                problema: error || error.message
+            });
+        }
+    };
 
 
 
 
 
 
-// peticion post -> hacer un inicio de sesion (login) con validacion de contraseña 
+    // peticion post -> hacer un inicio de sesion (login) con validacion de contraseña 
 
-export const loginUser = async (req, res) => {
-  // manejo de errores -> atrapar lo que pueda salir mal
-try {
-    // Destructuración -> obtenemos las credenciales que envía el usuario
-    const { email, password } = req.body;
-    
-    
-    // Validación -> verificamos que lleguen las credenciales
-    if (!email || !password) {
-    return res.status(400).json({
-        mensaje: "Debes proporcionar el correo y la contraseña",
-    });
-    }
+    export const loginUser = async (req, res) => {
+        // manejo de errores -> atrapar lo que pueda salir mal
+        try {
+            // Destructuración -> obtenemos las credenciales que envía el usuario
+            const { email, password } = req.body;
 
-    // 1. Buscamos al usuario por su correo
-    const user = await userModel.findOne({ email });
 
-    // Si no existe el usuario -> credenciales inválidas
-    // (usamos un mensaje genérico para no revelar si el correo existe o no)
-    if (!user) {
-    return res.status(401).json({
-        mensaje: "Credenciales inválidas",
-    });
-    }
+            // Validación -> verificamos que lleguen las credenciales
+            if (!email || !password) {
+                return res.status(400).json({
+                    mensaje: "Debes proporcionar el correo y la contraseña",
+                });
+            }
 
-    // 2. Comparamos la contraseña enviada con la contraseña encriptada almacenada
-    // .compare -> devuelve true si coinciden, false si no
-    const passwordValido = await bcrypt.compare(password, user.password);
+            // 1. Buscamos al usuario por su correo
+            const user = await userModel.findOne({ email });
 
-    if (!passwordValido) {
-    return res.status(401).json({
-        mensaje: "Credenciales inválidas",
-    });
-    }
+            // Si no existe el usuario -> credenciales inválidas
+            // (usamos un mensaje genérico para no revelar si el correo existe o no)
+            if (!user) {
+                return res.status(401).json({
+                    mensaje: "Credenciales inválidas",
+                });
+            }
 
-    // 3. Generamos el token (JWT) con la información que queremos guardar en él (payload)
-    const token = jwt.sign(
-    {
-        id: user._id,
-        email: user.email,
-    },
-      process.env.JWT_SECRET, // clave secreta guardada en las variables de entorno (.env)
-      { expiresIn: "1h" } // el token expira en 1 hora
-    );
+            // 2. Comparamos la contraseña enviada con la contraseña encriptada almacenada
+            // .compare -> devuelve true si coinciden, false si no
+            const passwordValido = await bcrypt.compare(password, user.password);
 
-    // 4. Respondemos con el token y los datos básicos del usuario
-    return res.status(200).json({
-    mensaje: "Inicio de sesión exitoso",
-    token,
-    });
-} catch (error) {
-    return res.status(400).json({
-    mensaje: "Ocurrió un error al iniciar sesión",
-    problema: error.message || error,
-    });
-}
-};
-}      
+            if (!passwordValido) {
+                return res.status(401).json({
+                    mensaje: "Credenciales inválidas",
+                });
+            }
+
+            // 3. Generamos el token (JWT) con la información que queremos guardar en él (payload)
+            const token = jwt.sign(
+                {
+                    id: user._id,
+                    email: user.email,
+                },
+                process.env.JWT_SECRET, // clave secreta guardada en las variables de entorno (.env)
+                { expiresIn: "1h" } // el token expira en 1 hora
+            );
+
+            // 4. Respondemos con el token y los datos básicos del usuario
+            return res.status(200).json({
+                mensaje: "Inicio de sesión exitoso",
+                token,
+            });
+        } catch (error) {
+            return res.status(400).json({
+                mensaje: "Ocurrió un error al iniciar sesión",
+                problema: error.message || error,
+            });
+        }
+    };
+
