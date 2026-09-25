@@ -15,8 +15,14 @@ const userSchema = new mongoose.Schema({
     password: {
         type: String,
         required: true
-    }
+    },
+
+    rol: {
+type: String,
+enum: ['user', 'admin'], 
+default: 'user'          
+}
 });
 
-// 3 crear el modelo de usuario: es el que permite definir las acciones que crearemos con los controladores
+
 export  const userModel  = mongoose.model("User", userSchema);
